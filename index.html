@@ -108,9 +108,9 @@
           <div class="auto-foot"><span>Prevents overlapping orders</span><button class="text-btn" id="simulateFromRules">Run demo →</button></div>
         </div>
 
-        <div class="automation-card featured"><div class="automation-top"><div class="auto-icon">✦</div><div><span class="live-tag">LIVE</span><h3>Smart Auto Accept</h3><p>Automatically accept offers that match your preferred delivery profile.</p></div><button class="switch on rule-switch"><span></span></button></div><div class="conditions"><span>₹ ≥ 120</span><span>Pickup ≤ 3 km</span><span>ETA ≤ 35 min</span><span>Area = Preferred</span></div><div class="auto-foot"><span>Last triggered 4 minutes ago</span><button class="text-btn">Edit rule →</button></div></div>
-        <div class="automation-card"><div class="automation-top"><div class="auto-icon soft">⌁</div><div><span class="draft-tag">PAUSED</span><h3>Peak Hour Mode</h3><p>Use a higher minimum payout during busy hours.</p></div><button class="switch rule-switch"><span></span></button></div><div class="conditions"><span>17:00–22:00</span><span>₹ ≥ 160</span><span>Pickup ≤ 4 km</span></div><div class="auto-foot"><span>Not running</span><button class="text-btn">Edit rule →</button></div></div>
-        <div class="automation-card"><div class="automation-top"><div class="auto-icon soft">⌂</div><div><span class="draft-tag">PAUSED</span><h3>Preferred Areas</h3><p>Prioritise jobs around your selected zones.</p></div><button class="switch rule-switch"><span></span></button></div><div class="conditions"><span>Adajan</span><span>Vesu</span><span>City Light</span></div><div class="auto-foot"><span>Not running</span><button class="text-btn">Edit rule →</button></div></div>
+        <div class="automation-card featured"><div class="automation-top"><div class="auto-icon">✦</div><div><span class="live-tag">LIVE</span><h3>Smart Auto Accept</h3><p>Automatically accept offers that match your preferred delivery profile.</p></div><button class="switch on rule-switch"><span></span></button></div><div class="conditions"><span>₹ ≥ 120</span><span>Pickup ≤ 3 km</span><span>ETA ≤ 35 min</span><span>Area = Preferred</span></div><div class="auto-foot"><span>Last triggered 4 minutes ago</span><button class="text-btn" data-rule-edit="smart">Edit rule →</button></div></div>
+        <div class="automation-card"><div class="automation-top"><div class="auto-icon soft">⌁</div><div><span class="draft-tag">PAUSED</span><h3>Peak Hour Mode</h3><p>Use a higher minimum payout during busy hours.</p></div><button class="switch rule-switch"><span></span></button></div><div class="conditions"><span>17:00–22:00</span><span>₹ ≥ 160</span><span>Pickup ≤ 4 km</span></div><div class="auto-foot"><span>Not running</span><button class="text-btn" data-rule-edit="peak">Edit rule →</button></div></div>
+        <div class="automation-card"><div class="automation-top"><div class="auto-icon soft">⌂</div><div><span class="draft-tag">PAUSED</span><h3>Preferred Areas</h3><p>Prioritise jobs around your selected zones.</p></div><button class="switch rule-switch"><span></span></button></div><div class="conditions"><span>Adajan</span><span>Vesu</span><span>City Light</span></div><div class="auto-foot"><span>Not running</span><button class="text-btn" data-rule-edit="areas">Edit rule →</button></div></div>
       </div>
 
       <div id="view-orders" class="view">
@@ -151,6 +151,12 @@
       <button data-view="settings"><span>⚙</span><small>More</small></button>
     </nav>
   </main>
+</div>
+<div class="rule-modal-backdrop" id="ruleModal" aria-hidden="true">
+  <section class="rule-modal" role="dialog" aria-modal="true" aria-labelledby="ruleModalTitle">
+    <div class="rule-modal-head"><div><span class="eyebrow">RULE SETTINGS</span><h2 id="ruleModalTitle">Edit rule</h2><p class="muted">Changes are saved on this device and used by the demo.</p></div><button class="modal-close" id="closeRuleModal" aria-label="Close">×</button></div>
+    <form id="ruleForm"><div id="ruleFields" class="rule-fields"></div><div class="rule-modal-actions"><button type="button" class="secondary" id="cancelRuleEdit">Cancel</button><button type="submit" class="primary">Save changes</button></div></form>
+  </section>
 </div>
 <div class="toast" id="toast"></div>
 <script src="app.js"></script>
