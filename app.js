@@ -41,19 +41,66 @@ function syncExclusiveToggles(enabled, source){
 
 let lockTimer=null;
 let remaining=0;
+let activePlatform="Porter";
+let cycle=0;
+const platforms=["Porter","Swiggy","Zomato","Rapido"];
+function notifyRider(title,detail){
+  showToast(title+" · "+detail);
+  const toastEl=document.getElementById("toast");
+  toastEl.setAttribute("role","alert");
+  if("Notification" in window && Notification.permission==="granted"){
+    try{new Notification(title,{body:detail,tag:"delivery-automation"});}catch(e){}
+  }
+}
+function renderPlatforms(){
+  document.querySelectorAll(".platform-pill").forEach(p=>{
+    const name=platforms.find(n=>p.textContent.includes(n));
+    p.classList.toggle("locked",Boolean(activePlatform)&&name!==activePlatform);
+    p.classList.toggle("live",!activePlatform||name===activePlatform);
+  });
+}
+function lockFor(platform){
+  activePlatform=platform;
+  document.getElementById("lockLabel").textContent="ORDER LOCK ACTIVE";
+  document.getElementById("lockTitle").textContent=platform+" accepted · other platforms paused";
+  document.getElementById("lockDetail").textContent="Exclusive lock is active. Other connected platforms are paused to prevent overlapping orders.";
+  document.getElementById("countdown").textContent="ACTIVE";
+  renderPlatforms();
+}
+function unlockAll(){
+  activePlatform=null;
+  document.getElementById("lockLabel").textContent="SEARCHING FOR OFFERS";
+  document.getElementById("lockTitle").textContent="All platforms live again";
+  document.getElementById("lockDetail").textContent="Comparing available offers against the rider's preferences.";
+  document.getElementById("countdown").textContent="LIVE";
+  renderPlatforms();
+}
+function autoSelectBest(){
+  const candidates=[
+    {platform:"Porter",payout:168,distance:2.2,eta:24},
+    {platform:"Swiggy",payout:142,distance:1.4,eta:28},
+    {platform:"Zomato",payout:126,distance:2.6,eta:31},
+    {platform:"Rapido",payout:154,distance:3.4,eta:22}
+  ].filter(o=>o.payout>=120&&o.distance<=3&&o.eta<=35);
+  const best=candidates.sort((a,b)=>(b.payout-(b.distance*4)-(b.eta*.3))-(a.payout-(a.distance*4)-(a.eta*.3)))[0];
+  if(!best){notifyRider("No eligible offer","All offers failed your preferences.");return;}
+  cycle++;
+  lockFor(best.platform);
+  notifyRider("Best offer auto-accepted",best.platform+" · ₹"+best.payout+" · "+best.distance+" km · "+best.eta+" min");
+}
+
 function resetLock(){
   remaining=0;
   const label=document.getElementById("lockLabel"),title=document.getElementById("lockTitle"),detail=document.getElementById("lockDetail"),count=document.getElementById("countdown");
   if(!label)return;
+  activePlatform=null;
   label.textContent="READY FOR OFFERS"; title.textContent="All platforms live"; detail.textContent="The engine can compare incoming offers and select the best match."; count.textContent="—";
-  document.querySelectorAll(".platform-pill").forEach(p=>p.classList.remove("locked"));
+  renderPlatforms();
 }
 function setLockState(){
   const label=document.getElementById("lockLabel"),title=document.getElementById("lockTitle"),detail=document.getElementById("lockDetail"),count=document.getElementById("countdown");
-  label.textContent="ORDER LOCK ACTIVE"; title.textContent="Porter accepted · other platforms paused"; detail.textContent="All connected platforms are temporarily off to prevent overlapping orders."; count.textContent=formatTime(remaining);
-  document.querySelectorAll(".platform-pill").forEach(p=>p.classList.add("locked"));
-  const porter=[...document.querySelectorAll(".platform-pill")].find(p=>p.textContent.includes("Porter"));
-  if(porter) porter.classList.remove("locked");
+  label.textContent="ORDER LOCK ACTIVE"; title.textContent=activePlatform+" accepted · other platforms paused"; detail.textContent="All connected platforms are temporarily paused to prevent overlapping orders."; count.textContent=formatTime(remaining);
+  renderPlatforms();
 }
 function formatTime(sec){return "0"+Math.floor(sec/60)+":"+String(sec%60).padStart(2,"0");}
 function startExclusiveDemo(){
@@ -62,7 +109,8 @@ function startExclusiveDemo(){
   if(lockTimer)clearInterval(lockTimer);
   remaining=120;
   setLockState();
-  showToast("Porter order accepted · all other apps paused");
+  lockFor("Porter");
+  notifyRider("Order accepted automatically","Porter · other platforms paused");
   lockTimer=setInterval(()=>{
     remaining--;
     if(remaining>0){
@@ -81,6 +129,15 @@ function startExclusiveDemo(){
   },1000);
 }
 document.getElementById("simulateOrder")?.addEventListener("click",startExclusiveDemo);
+document.getElementById("simulateCancel")?.addEventListener("click",()=>{
+  if(lockTimer){clearInterval(lockTimer);lockTimer=null;}
+  if(!activePlatform){notifyRider("No active delivery","Cancellation demo is available after an order is accepted.");return;}
+  const cancelled=activePlatform;
+  activePlatform=null;
+  unlockAll();
+  notifyRider("Order cancelled","The "+cancelled+" order was cancelled. Reopening platforms and finding the next best offer.");
+  setTimeout(autoSelectBest,500);
+});
 document.getElementById("simulateFromRules")?.addEventListener("click",()=>{setView("overview");setTimeout(startExclusiveDemo,250)});
 
 document.getElementById("newRule").addEventListener("click",()=>showToast("Rule builder is ready for the next integration step"));
