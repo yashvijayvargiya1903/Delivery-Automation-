@@ -202,3 +202,7 @@ function renderRuleSettings(){
 }
 
 renderRuleSettings();
+
+document.querySelectorAll("[data-rule-toggle]").forEach(sw=>sw.addEventListener("click",()=>{
+ const key=sw.dataset.ruleToggle;ruleConfig[key].enabled=sw.classList.contains("on");saveRuleConfig();renderRuleSettings();
+}));
