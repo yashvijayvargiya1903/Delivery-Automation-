@@ -57,3 +57,4 @@ main{margin-left:240px;width:calc(100% - 240px);min-height:100vh}.topbar{height:
 .rule-field.checkbox-field input{width:17px;height:17px;accent-color:#14804a}
 .rule-modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:22px;padding-top:16px;border-top:1px solid #eee}
 @media(max-width:520px){.rule-modal{padding:19px}.rule-fields{grid-template-columns:1fr}.rule-modal-actions button{flex:1}}
+.rule-actions{display:flex;align-items:center;gap:14px}.rule-actions .text-btn{white-space:nowrap}@media(max-width:520px){.rule-actions{gap:10px}}
