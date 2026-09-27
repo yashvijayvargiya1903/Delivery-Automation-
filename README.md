@@ -12,10 +12,10 @@ The core workflow is designed around one active delivery at a time:
 4. The active delivery keeps its lock until its estimated completion window.
 5. **At 2 minutes before the estimated completion time**, connected platforms reopen.
 6. The engine compares eligible offers using the user's rules — payout, pickup distance, ETA, preferred area and other scoring factors.
-7. The highest-scoring eligible offer can be accepted automatically.
-8. The lock moves to the newly accepted order and the cycle repeats.
+7. The highest-scoring eligible offer can be accepted automatically, with a rider popup/push notification.
+8. If an active order is cancelled, the system immediately unlocks all platforms, alerts the rider, searches available offers and attempts to auto-accept the best eligible one. The lock moves to the newly accepted order and the cycle repeats.
 
-The current GitHub Pages demo includes a simulated version of this flow with a 2-minute countdown.
+The current GitHub Pages demo includes simulated incoming-order, cancellation, automatic lock/reopen, best-offer selection and rider notification flows. Demo controls simulate provider events; they do not control real delivery apps.
 
 ## Production architecture
 
