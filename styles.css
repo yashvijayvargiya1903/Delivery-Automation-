@@ -66,3 +66,8 @@ main{margin-left:240px;width:calc(100% - 240px);min-height:100vh}.topbar{height:
 .area-chip:has(input:checked){border-color:#26865c;background:#eef8f2;color:#14633f}
 .area-chip input{width:16px;height:16px;accent-color:#14804a}
 @media(max-width:520px){.multi-field{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Avoid accidental double-tap zoom and improve touch responsiveness. */
+html{touch-action:manipulation;-webkit-text-size-adjust:100%}
+button,a,[role=button],select{touch-action:manipulation}
+input,textarea,select{font-size:16px;}
