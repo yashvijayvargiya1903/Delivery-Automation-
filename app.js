@@ -141,10 +141,10 @@ let ruleConfig={...RULE_DEFAULTS};
 try{ruleConfig={...RULE_DEFAULTS,...JSON.parse(localStorage.getItem("deliveryRuleConfig")||"{}")};}catch(e){}
 function saveRuleConfig(){try{localStorage.setItem("deliveryRuleConfig",JSON.stringify(ruleConfig));}catch(e){}}
 const ruleSchemas={
- smart:[["name","Rule name","text"],["minPayout","Minimum payout (₹)","number"],["maxDistance","Maximum pickup distance (km)","number"],["maxEta","Maximum delivery ETA (min)","number"],["preferredOnly","Only accept preferred areas","checkbox"]],
- peak:[["name","Rule name","text"],["start","Start time","time"],["end","End time","time"],["minPayout","Minimum payout (₹)","number"],["maxDistance","Maximum pickup distance (km)","number"]],
- areas:[["name","Rule name","text"],["areas","Preferred areas (comma-separated)","text"]],
- exclusive:[["name","Rule name","text"],["releaseMinutes","Reopen platforms before completion (minutes)","number"]]
+ smart:[["minPayout","Minimum payout","choice",["₹80","₹100","₹120","₹140","₹160","₹180","₹200"]],["maxDistance","Maximum pickup distance","choice",["1 km","2 km","3 km","4 km","5 km","6 km"]],["maxEta","Maximum delivery time","choice",["15 min","20 min","25 min","30 min","35 min","40 min","45 min","60 min"]],["preferredOnly","Preferred areas only","choice",["Yes","No"]]],
+ peak:[["start","Start time","choice",["12:00","14:00","16:00","17:00","18:00","19:00","20:00"]],["end","End time","choice",["18:00","19:00","20:00","21:00","22:00","23:00","00:00"]],["minPayout","Minimum payout","choice",["₹100","₹120","₹140","₹160","₹180","₹200","₹250"]],["maxDistance","Maximum pickup distance","choice",["1 km","2 km","3 km","4 km","5 km","6 km"]]],
+ areas:[["areas","Choose preferred areas","multi",["Adajan","Vesu","City Light","Athwa","Pal","Varachha","Katargam","Piplod","Udhna","Majura Gate"]]],
+ exclusive:[["releaseMinutes","Reopen platforms before completion","choice",["1 min","2 min","3 min","4 min","5 min"]]]
 };
 let editingRule=null;
 function openRuleEditor(key){
@@ -152,57 +152,29 @@ function openRuleEditor(key){
  editingRule=key;const cfg=ruleConfig[key]||RULE_DEFAULTS[key];
  document.getElementById("ruleModalTitle").textContent="Edit "+cfg.name;
  const fields=document.getElementById("ruleFields");fields.innerHTML="";
- ruleSchemas[key].forEach(([name,label,type])=>{
-   const wrap=document.createElement("label");wrap.className="rule-field"+(type==="checkbox"?" checkbox-field":"");
+ ruleSchemas[key].forEach(([name,label,type,options])=>{
+   const wrap=document.createElement("label");wrap.className="rule-field"+(type==="multi"?" multi-field":"");
    const title=document.createElement("span");title.textContent=label;wrap.appendChild(title);
-   const input=document.createElement("input");input.name=name;input.type=type;
-   if(type==="checkbox"){input.checked=Boolean(cfg[name]);}
-   else{input.value=cfg[name]??"";if(type==="number"){input.min="0";input.step="any";}}
-   wrap.appendChild(input);fields.appendChild(wrap);
- });
- const modal=document.getElementById("ruleModal");modal.classList.add("open");modal.setAttribute("aria-hidden","false");
-}
-function closeRuleEditor(){const modal=document.getElementById("ruleModal");modal.classList.remove("open");modal.setAttribute("aria-hidden","true");editingRule=null;}
-document.querySelectorAll("[data-rule-edit]").forEach(b=>b.addEventListener("click",()=>openRuleEditor(b.dataset.ruleEdit)));
-document.getElementById("closeRuleModal").addEventListener("click",closeRuleEditor);
-document.getElementById("cancelRuleEdit").addEventListener("click",closeRuleEditor);
-document.getElementById("ruleModal").addEventListener("click",e=>{if(e.target.id==="ruleModal")closeRuleEditor();});
-document.getElementById("ruleForm").addEventListener("submit",e=>{
- e.preventDefault();if(!editingRule)return;
- const form=new FormData(e.currentTarget);const updated={...ruleConfig[editingRule]};
- for(const [key,label,type] of ruleSchemas[editingRule]){
-   const el=e.currentTarget.elements.namedItem(key);
-   updated[key]=type==="checkbox"?el.checked:type==="number"?Number(el.value):el.value.trim();
+   if(type==="choice"){
+     const select=document.createElement("select");select.name=name;
+     options.forEach(option=>{const opt=document.createElement("option");opt.value=option;opt.textContent=option;select.appendChild(opt);});
+     const current=String(cfg[name]);const match=[...select.options].find(o=>o.value===current||o.value.startsWith(current+" ")||o.value.replace(/[^0-9.]/g,"")===current);
+     if(match)select.value=match.value;
+     wrap.appendChild(select);
+   } else if(type==="multi"){
+     const selected=String(cfg[name]||"").split(",").map(s=>s.trim()).filter(Boolean);
+     options.forEach(option=>{
+       const item=document.createElement("label");item.className="area-chip";
+       const input=document.createElement("input");input.type="checkbox";input.name=name;input.value=option;input.checked=selected.includes(option);
+       const text=document.createElement("span");text.textContent=option;item.append(input,text);wrap.appendChild(item);
+     });
+   }
+   fields.appendChild(wrap);
+ }); for(const [key,label,type] of ruleSchemas[editingRule]){
+   if(type==="choice"){
+     const value=e.currentTarget.elements.namedItem(key).value;
+     updated[key]=key==="preferredOnly"?value==="Yes":Number(value.replace(/[^0-9.]/g,""))||value;
+   } else if(type==="multi"){
+     updated[key]=[...e.currentTarget.querySelectorAll('input[name="'+key+'"]:checked')].map(el=>el.value).join(", ");
+   }
  }
- if(!updated.name){showToast("Please enter a rule name");return;}
- if(Object.values(updated).some(v=>typeof v==="number"&&(!Number.isFinite(v)||v<0))){showToast("Enter valid non-negative limits");return;}
- ruleConfig[editingRule]=updated;saveRuleConfig();renderRuleSettings();closeRuleEditor();showToast("Rule changes saved");
-});
-function renderRuleSettings(){
- const smart=ruleConfig.smart,peak=ruleConfig.peak,areas=ruleConfig.areas,ex=ruleConfig.exclusive;
- const cards=[["smart",smart,[smart.minPayout+"₹ minimum","Pickup ≤ "+smart.maxDistance+" km","ETA ≤ "+smart.maxEta+" min",smart.preferredOnly?"Preferred areas only":"Any area"]],
- ["peak",peak,[peak.start+"–"+peak.end,peak.minPayout+"₹ minimum","Pickup ≤ "+peak.maxDistance+" km"]],
- ["areas",areas,areas.areas.split(",").map(s=>s.trim()).filter(Boolean)]];
- const containers=document.querySelectorAll("#view-automations .automation-card");
- const cardIndexes=[1,2,3];
- cards.forEach(([key,cfg,conditions],i)=>{
-  const card=containers[cardIndexes[i]];if(!card)return;
-  const title=card.querySelector("h3");if(title)title.textContent=cfg.name;
-  const tags=card.querySelectorAll(".conditions span");tags.forEach((el,n)=>{el.textContent=conditions[n]||"";el.hidden=!conditions[n];});
-  const tag=card.querySelector(".live-tag,.draft-tag");if(tag){tag.textContent=cfg.enabled?"LIVE":"PAUSED";tag.className=cfg.enabled?"live-tag":"draft-tag";}
-  const sw=card.querySelector(".rule-switch");if(sw)sw.classList.toggle("on",Boolean(cfg.enabled));
- });
- const core=containers[0];if(core){core.querySelector("h3").textContent=ex.name;const tags=core.querySelectorAll(".conditions span");if(tags[1])tags[1].textContent="Release window = "+ex.releaseMinutes+" min";}
- document.querySelectorAll("#view-overview .rule-list .rule").forEach((el,i)=>{
-   const cfg=[smart,smart,smart][i];const small=el.querySelector("small");
-   if(i===0)small.textContent="Accept only ₹"+smart.minPayout+" or more";
-   if(i===1)small.textContent="Pickup under "+smart.maxDistance+" km";
-   if(i===2)small.textContent="Estimated time under "+smart.maxEta+" min";
- });
-}
-
-renderRuleSettings();
-
-document.querySelectorAll("[data-rule-toggle]").forEach(sw=>sw.addEventListener("click",()=>{
- const key=sw.dataset.ruleToggle;ruleConfig[key].enabled=sw.classList.contains("on");saveRuleConfig();renderRuleSettings();
-}));
