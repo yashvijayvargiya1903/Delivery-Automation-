@@ -36,3 +36,8 @@ main{margin-left:240px;width:calc(100% - 240px);min-height:100vh}.topbar{height:
   .exclusive-actions{align-items:flex-start;flex-direction:column}
   .exclusive-actions>span{align-self:flex-end}
 }
+
+.demo-buttons{display:flex;gap:8px;flex-wrap:wrap}
+.secondary.danger{background:#2b1c1c;color:#f4b2b2;border:1px solid #573232}
+.secondary.danger:hover{background:#392020}
+@media(max-width:520px){.demo-buttons{width:100%;flex-direction:column}.demo-buttons button{width:100%}}
