@@ -41,3 +41,19 @@ main{margin-left:240px;width:calc(100% - 240px);min-height:100vh}.topbar{height:
 .secondary.danger{background:#2b1c1c;color:#f4b2b2;border:1px solid #573232}
 .secondary.danger:hover{background:#392020}
 @media(max-width:520px){.demo-buttons{width:100%;flex-direction:column}.demo-buttons button{width:100%}}
+
+.rule-modal-backdrop{position:fixed;inset:0;background:rgba(10,10,10,.48);display:none;align-items:center;justify-content:center;padding:18px;z-index:80}
+.rule-modal-backdrop.open{display:flex}
+.rule-modal{width:min(100%,520px);max-height:min(88vh,760px);overflow:auto;background:#fff;border-radius:16px;padding:24px;box-shadow:0 24px 80px #0003}
+.rule-modal-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:20px}
+.rule-modal-head h2{font:800 21px Manrope;margin:0 0 5px}
+.rule-modal-head .muted{font-size:11px}
+.modal-close{font-size:27px;line-height:1;color:#777;padding:0 4px}
+.rule-fields{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.rule-field{display:grid;gap:7px;font-size:11px;color:#555;font-weight:600}
+.rule-field input:not([type=checkbox]){width:100%;min-height:40px;border:1px solid #deded9;border-radius:8px;padding:9px 11px;background:#fafaf8;color:#151515;font:500 13px "DM Sans",sans-serif;outline:none}
+.rule-field input:focus{border-color:#1f6fff;box-shadow:0 0 0 3px #1f6fff18}
+.rule-field.checkbox-field{grid-column:1/-1;display:flex;align-items:center;gap:10px}
+.rule-field.checkbox-field input{width:17px;height:17px;accent-color:#14804a}
+.rule-modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:22px;padding-top:16px;border-top:1px solid #eee}
+@media(max-width:520px){.rule-modal{padding:19px}.rule-fields{grid-template-columns:1fr}.rule-modal-actions button{flex:1}}
