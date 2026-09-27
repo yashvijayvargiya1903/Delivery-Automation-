@@ -54,6 +54,31 @@
           <article><span>Time saved</span><strong>2h 18m</strong><small>By automation</small></article>
         </div>
 
+        <section class="exclusive-card">
+          <div class="exclusive-head">
+            <div>
+              <span class="eyebrow">EXCLUSIVE ORDER LOCK</span>
+              <h3>One order at a time</h3>
+              <p>When a delivery is accepted, connected platforms pause automatically. They reopen 2 minutes before the current delivery is due to finish.</p>
+            </div>
+            <button class="switch on" id="exclusiveToggle" aria-label="Toggle exclusive order lock"><span></span></button>
+          </div>
+          <div class="platform-strip" id="platformStrip">
+            <span class="platform-pill live"><i></i>Porter</span>
+            <span class="platform-pill live"><i></i>Swiggy</span>
+            <span class="platform-pill live"><i></i>Zomato</span>
+            <span class="platform-pill live"><i></i>Rapido</span>
+          </div>
+          <div class="lock-state">
+            <div><span class="lock-label" id="lockLabel">READY FOR OFFERS</span><strong id="lockTitle">All platforms live</strong><small id="lockDetail">The engine can compare incoming offers and select the best match.</small></div>
+            <div class="countdown" id="countdown">—</div>
+          </div>
+          <div class="exclusive-actions">
+            <button class="secondary" id="simulateOrder">Simulate Porter order</button>
+            <span>Demo mode · 2:00 release window</span>
+          </div>
+        </section>
+
         <div class="grid-2">
           <section class="panel">
             <div class="panel-head"><div><span class="eyebrow">ACTIVE RULES</span><h3>What your automation is doing</h3></div><button class="text-btn" data-view-target="automations">Manage →</button></div>
@@ -77,6 +102,12 @@
 
       <div id="view-automations" class="view">
         <div class="section-head"><div><p class="eyebrow">AUTOMATION BUILDER</p><h1>Your rules</h1><p class="muted">Simple conditions. Predictable decisions.</p></div><button class="primary" id="newRule">+ New rule</button></div>
+        <div class="automation-card featured exclusive-builder">
+          <div class="automation-top"><div class="auto-icon">◎</div><div><span class="live-tag">CORE RULE</span><h3>Exclusive Order Lock</h3><p>Keep all connected delivery platforms paused after one order is accepted, then reopen them near completion.</p></div><button class="switch on" id="builderExclusiveToggle"><span></span></button></div>
+          <div class="conditions"><span>Order accepted → Lock all</span><span>Release window = 2 min</span><span>Compare all live offers</span><span>Auto-accept best match</span></div>
+          <div class="auto-foot"><span>Prevents overlapping orders</span><button class="text-btn" id="simulateFromRules">Run demo →</button></div>
+        </div>
+
         <div class="automation-card featured"><div class="automation-top"><div class="auto-icon">✦</div><div><span class="live-tag">LIVE</span><h3>Smart Auto Accept</h3><p>Automatically accept offers that match your preferred delivery profile.</p></div><button class="switch on rule-switch"><span></span></button></div><div class="conditions"><span>₹ ≥ 120</span><span>Pickup ≤ 3 km</span><span>ETA ≤ 35 min</span><span>Area = Preferred</span></div><div class="auto-foot"><span>Last triggered 4 minutes ago</span><button class="text-btn">Edit rule →</button></div></div>
         <div class="automation-card"><div class="automation-top"><div class="auto-icon soft">⌁</div><div><span class="draft-tag">PAUSED</span><h3>Peak Hour Mode</h3><p>Use a higher minimum payout during busy hours.</p></div><button class="switch rule-switch"><span></span></button></div><div class="conditions"><span>17:00–22:00</span><span>₹ ≥ 160</span><span>Pickup ≤ 4 km</span></div><div class="auto-foot"><span>Not running</span><button class="text-btn">Edit rule →</button></div></div>
         <div class="automation-card"><div class="automation-top"><div class="auto-icon soft">⌂</div><div><span class="draft-tag">PAUSED</span><h3>Preferred Areas</h3><p>Prioritise jobs around your selected zones.</p></div><button class="switch rule-switch"><span></span></button></div><div class="conditions"><span>Adajan</span><span>Vesu</span><span>City Light</span></div><div class="auto-foot"><span>Not running</span><button class="text-btn">Edit rule →</button></div></div>
@@ -106,7 +137,8 @@
           <div class="setting"><div><strong>Confirmation mode</strong><small>Ask before accepting borderline offers.</small></div><button class="switch"><span></span></button></div>
           <div class="setting"><div><strong>Push notifications</strong><small>Notify me when an offer is accepted or rejected.</small></div><button class="switch on"><span></span></button></div>
           <div class="setting"><div><strong>Preferred currency</strong><small>Indian Rupee · INR (₹)</small></div><button class="chevron">›</button></div>
-          <div class="setting"><div><strong>Connected platform</strong><small>Delivery provider connection · Demo mode</small></div><span class="connected">Connected</span></div>
+          <div class="setting"><div><strong>Exclusive Order Lock</strong><small>Pause connected platforms after acceptance and reopen 2 minutes before completion.</small></div><button class="switch on" id="settingsExclusiveToggle"><span></span></button></div>
+          <div class="setting"><div><strong>Connected platforms</strong><small>Porter · Swiggy · Zomato · Rapido · Demo adapters</small></div><span class="connected">4 connected</span></div>
         </div>
       </div>
     </section>
