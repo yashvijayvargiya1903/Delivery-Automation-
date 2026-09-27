@@ -1,0 +1,9 @@
+{
+  "name": "Delivery Automation",
+  "short_name": "Delivery OS",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f7f7f5",
+  "theme_color": "#f7f7f5",
+  "description": "Premium mobile-first delivery automation console."
+}
