@@ -123,15 +123,7 @@ document.getElementById("simulateCancel")?.addEventListener("click",()=>{
   notifyRider("Order cancelled","The "+cancelled+" order was cancelled. Platforms reopened; searching for the next best offer.");
   setTimeout(autoSelectBest,500);
 });
-document.getElementById("simulateCancel")?.addEventListener("click",()=>{
-  if(lockTimer){clearInterval(lockTimer);lockTimer=null;}
-  if(!activePlatform){notifyRider("No active delivery","Cancellation demo is available after an order is accepted.");return;}
-  const cancelled=activePlatform;
-  activePlatform=null;
-  unlockAll();
-  notifyRider("Order cancelled","The "+cancelled+" order was cancelled. Reopening platforms and finding the next best offer.");
-  setTimeout(autoSelectBest,500);
-});
+
 document.getElementById("simulateFromRules")?.addEventListener("click",()=>{setView("overview");setTimeout(startExclusiveDemo,250)});
 
 document.getElementById("newRule").addEventListener("click",()=>showToast("Rule builder is ready for the next integration step"));
