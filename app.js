@@ -170,11 +170,38 @@ function openRuleEditor(key){
      });
    }
    fields.appendChild(wrap);
- }); for(const [key,label,type] of ruleSchemas[editingRule]){
+ });
+ document.getElementById("ruleModal").classList.add("open");
+ document.getElementById("ruleModal").setAttribute("aria-hidden","false");
+}
+function closeRuleEditor(){
+ const modal=document.getElementById("ruleModal");
+ modal.classList.remove("open");modal.setAttribute("aria-hidden","true");
+ editingRule=null;
+}
+document.getElementById("closeRuleModal").addEventListener("click",closeRuleEditor);
+document.getElementById("cancelRuleEdit").addEventListener("click",closeRuleEditor);
+document.getElementById("ruleModal").addEventListener("click",e=>{if(e.target.id==="ruleModal")closeRuleEditor();});
+document.getElementById("ruleForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ if(!editingRule)return;
+ const updated={...ruleConfig[editingRule]};
+ for(const [name,label,type] of ruleSchemas[editingRule]){
    if(type==="choice"){
-     const value=e.currentTarget.elements.namedItem(key).value;
-     updated[key]=key==="preferredOnly"?value==="Yes":Number(value.replace(/[^0-9.]/g,""))||value;
-   } else if(type==="multi"){
-     updated[key]=[...e.currentTarget.querySelectorAll('input[name="'+key+'"]:checked')].map(el=>el.value).join(", ");
+     const value=e.currentTarget.elements.namedItem(name).value;
+     updated[name]=name==="preferredOnly"?value==="Yes":(Number(value.replace(/[^0-9.]/g,""))||value);
+   }else if(type==="multi"){
+     updated[name]=[...e.currentTarget.querySelectorAll('input[name="'+name+'"]:checked')].map(el=>el.value).join(", ");
    }
  }
+ ruleConfig[editingRule]={...updated};
+ saveRuleConfig();
+ closeRuleEditor();
+ showToast("Rule settings saved");
+});
+document.querySelectorAll("[data-rule-edit]").forEach(b=>b.addEventListener("click",()=>openRuleEditor(b.dataset.ruleEdit)));
+document.querySelectorAll("[data-rule-toggle]").forEach(b=>b.addEventListener("click",()=>{
+ b.classList.toggle("on");
+ showToast(b.classList.contains("on")?"Rule enabled":"Rule paused");
+}));
+document.getElementById("ruleModal").addEventListener("keydown",e=>{if(e.key==="Escape")closeRuleEditor();});
