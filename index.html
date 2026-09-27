@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f7f7f5">
+  <meta name="description" content="Delivery Automation — a premium mobile-first operations console for automated delivery acceptance and dispatch.">
+  <title>Delivery Automation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark">D</span><div><strong>Delivery</strong><small>Automation</small></div></div>
+    <nav>
+      <button class="nav-item active" data-view="overview"><span>⌂</span>Overview</button>
+      <button class="nav-item" data-view="automations"><span>✦</span>Automations</button>
+      <button class="nav-item" data-view="orders"><span>↗</span>Orders</button>
+      <button class="nav-item" data-view="analytics"><span>◔</span>Analytics</button>
+      <button class="nav-item" data-view="settings"><span>⚙</span>Settings</button>
+    </nav>
+    <div class="sidebar-foot"><div class="live-dot"></div><span>System operational</span></div>
+  </aside>
+
+  <main>
+    <header class="topbar">
+      <button class="mobile-menu" id="menuBtn">☰</button>
+      <div class="crumb"><span>Workspace</span><b>/</b><strong id="pageTitle">Overview</strong></div>
+      <div class="top-actions">
+        <button class="icon-btn" id="bellBtn" aria-label="Notifications">♧<i></i></button>
+        <div class="avatar">Y</div>
+      </div>
+    </header>
+
+    <section class="content">
+      <div id="view-overview" class="view active-view">
+        <div class="hero-row">
+          <div><p class="eyebrow">SATURDAY · 27 SEPTEMBER</p><h1>Good evening, Yash.</h1><p class="muted">Your delivery operations are running quietly in the background.</p></div>
+          <button class="primary" data-view-target="automations">+ Create automation</button>
+        </div>
+
+        <div class="status-card">
+          <div class="status-main"><span class="pulse"></span><div><span class="label">AUTOMATION ENGINE</span><h2 id="engineText">Running smoothly</h2><p>Watching new delivery offers and applying your rules in real time.</p></div></div>
+          <button class="switch on" id="engineToggle"><span></span></button>
+        </div>
+
+        <div class="metrics">
+          <article><span>Accepted today</span><strong id="accepted">42</strong><small>+12% vs yesterday</small></article>
+          <article><span>Acceptance rate</span><strong>87.5%</strong><small>Across active rules</small></article>
+          <article><span>Est. earnings</span><strong>₹3,840</strong><small>Today · 42 jobs</small></article>
+          <article><span>Time saved</span><strong>2h 18m</strong><small>By automation</small></article>
+        </div>
+
+        <div class="grid-2">
+          <section class="panel">
+            <div class="panel-head"><div><span class="eyebrow">ACTIVE RULES</span><h3>What your automation is doing</h3></div><button class="text-btn" data-view-target="automations">Manage →</button></div>
+            <div class="rule-list">
+              <div class="rule"><span class="rule-icon">₹</span><div><strong>Minimum payout</strong><small>Accept only ₹120 or more</small></div><span class="check">✓</span></div>
+              <div class="rule"><span class="rule-icon">↔</span><div><strong>Distance limit</strong><small>Pickup under 3.0 km</small></div><span class="check">✓</span></div>
+              <div class="rule"><span class="rule-icon">◷</span><div><strong>Fast delivery</strong><small>Estimated time under 35 min</small></div><span class="check">✓</span></div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><div><span class="eyebrow">LIVE ACTIVITY</span><h3>Latest decisions</h3></div><button class="text-btn" data-view-target="orders">View all →</button></div>
+            <div class="activity" id="activity">
+              <div><span class="activity-dot accepted"></span><div><strong>Offer accepted</strong><small>₹148 · 2.1 km · 4 min ago</small></div><b>₹148</b></div>
+              <div><span class="activity-dot rejected"></span><div><strong>Offer rejected</strong><small>₹74 · 5.8 km · 7 min ago</small></div><b>—</b></div>
+              <div><span class="activity-dot accepted"></span><div><strong>Offer accepted</strong><small>₹132 · 1.8 km · 11 min ago</small></div><b>₹132</b></div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div id="view-automations" class="view">
+        <div class="section-head"><div><p class="eyebrow">AUTOMATION BUILDER</p><h1>Your rules</h1><p class="muted">Simple conditions. Predictable decisions.</p></div><button class="primary" id="newRule">+ New rule</button></div>
+        <div class="automation-card featured"><div class="automation-top"><div class="auto-icon">✦</div><div><span class="live-tag">LIVE</span><h3>Smart Auto Accept</h3><p>Automatically accept offers that match your preferred delivery profile.</p></div><button class="switch on rule-switch"><span></span></button></div><div class="conditions"><span>₹ ≥ 120</span><span>Pickup ≤ 3 km</span><span>ETA ≤ 35 min</span><span>Area = Preferred</span></div><div class="auto-foot"><span>Last triggered 4 minutes ago</span><button class="text-btn">Edit rule →</button></div></div>
+        <div class="automation-card"><div class="automation-top"><div class="auto-icon soft">⌁</div><div><span class="draft-tag">PAUSED</span><h3>Peak Hour Mode</h3><p>Use a higher minimum payout during busy hours.</p></div><button class="switch rule-switch"><span></span></button></div><div class="conditions"><span>17:00–22:00</span><span>₹ ≥ 160</span><span>Pickup ≤ 4 km</span></div><div class="auto-foot"><span>Not running</span><button class="text-btn">Edit rule →</button></div></div>
+        <div class="automation-card"><div class="automation-top"><div class="auto-icon soft">⌂</div><div><span class="draft-tag">PAUSED</span><h3>Preferred Areas</h3><p>Prioritise jobs around your selected zones.</p></div><button class="switch rule-switch"><span></span></button></div><div class="conditions"><span>Adajan</span><span>Vesu</span><span>City Light</span></div><div class="auto-foot"><span>Not running</span><button class="text-btn">Edit rule →</button></div></div>
+      </div>
+
+      <div id="view-orders" class="view">
+        <div class="section-head"><div><p class="eyebrow">DELIVERY FEED</p><h1>Orders & offers</h1><p class="muted">A transparent log of every automated decision.</p></div><button class="filter-btn">Today ▾</button></div>
+        <div class="order-stats"><div><span>Accepted</span><b>42</b></div><div><span>Rejected</span><b>6</b></div><div><span>Skipped</span><b>3</b></div></div>
+        <div class="orders">
+          <div class="order"><div class="order-left"><span class="order-status accepted">Accepted</span><h3>₹148 · 2.1 km</h3><p>Pickup: Vesu · Drop: City Light</p></div><div><strong>4 min ago</strong><small>All 4 rules matched</small></div></div>
+          <div class="order"><div class="order-left"><span class="order-status rejected">Rejected</span><h3>₹74 · 5.8 km</h3><p>Pickup: Adajan · Drop: Pal</p></div><div><strong>7 min ago</strong><small>Distance above limit</small></div></div>
+          <div class="order"><div class="order-left"><span class="order-status accepted">Accepted</span><h3>₹132 · 1.8 km</h3><p>Pickup: City Light · Drop: Athwa</p></div><div><strong>11 min ago</strong><small>All 4 rules matched</small></div></div>
+          <div class="order"><div class="order-left"><span class="order-status rejected">Rejected</span><h3>₹96 · 2.7 km</h3><p>Pickup: Varachha · Drop: Katargam</p></div><div><strong>18 min ago</strong><small>Payout below minimum</small></div></div>
+        </div>
+      </div>
+
+      <div id="view-analytics" class="view">
+        <div class="section-head"><div><p class="eyebrow">PERFORMANCE</p><h1>Analytics</h1><p class="muted">Understand what your automation is saving and earning.</p></div><button class="filter-btn">Last 7 days ▾</button></div>
+        <div class="analytics-grid"><div class="big-number"><span>Automated decisions</span><strong>286</strong><small>↑ 18.4%</small></div><div class="big-number"><span>Estimated earnings</span><strong>₹24.6k</strong><small>↑ 11.2%</small></div><div class="big-number"><span>Time saved</span><strong>13h 42m</strong><small>Across 7 days</small></div></div>
+        <section class="panel chart-panel"><div class="panel-head"><div><span class="eyebrow">ACCEPTANCE</span><h3>Decision trend</h3></div><span class="chart-note">87.5% avg.</span></div><div class="chart"><div class="chart-grid"></div><svg viewBox="0 0 700 230" preserveAspectRatio="none"><polyline points="0,175 100,150 200,160 300,105 400,120 500,72 600,86 700,42" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="700" cy="42" r="6" fill="currentColor"/></svg></div><div class="days"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div></section>
+      </div>
+
+      <div id="view-settings" class="view">
+        <div class="section-head"><div><p class="eyebrow">WORKSPACE</p><h1>Settings</h1><p class="muted">Configure your account and automation behaviour.</p></div></div>
+        <div class="settings-list">
+          <div class="setting"><div><strong>Automation safety</strong><small>Pause all automations when the app connection is lost.</small></div><button class="switch on"><span></span></button></div>
+          <div class="setting"><div><strong>Confirmation mode</strong><small>Ask before accepting borderline offers.</small></div><button class="switch"><span></span></button></div>
+          <div class="setting"><div><strong>Push notifications</strong><small>Notify me when an offer is accepted or rejected.</small></div><button class="switch on"><span></span></button></div>
+          <div class="setting"><div><strong>Preferred currency</strong><small>Indian Rupee · INR (₹)</small></div><button class="chevron">›</button></div>
+          <div class="setting"><div><strong>Connected platform</strong><small>Delivery provider connection · Demo mode</small></div><span class="connected">Connected</span></div>
+        </div>
+      </div>
+    </section>
+
+    <nav class="bottom-nav">
+      <button class="active" data-view="overview"><span>⌂</span><small>Home</small></button>
+      <button data-view="automations"><span>✦</span><small>Rules</small></button>
+      <button data-view="orders"><span>↗</span><small>Orders</small></button>
+      <button data-view="analytics"><span>◔</span><small>Stats</small></button>
+      <button data-view="settings"><span>⚙</span><small>More</small></button>
+    </nav>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>
